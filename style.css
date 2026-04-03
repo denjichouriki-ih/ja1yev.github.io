@@ -1,0 +1,605 @@
+/* =========================================
+   Base & Reset & Scroll Snapping
+========================================= */
+:root {
+    --theme-color: #9cbd40; /* メインの黄緑色 */
+    --theme-dark: #7a962f;
+    --bg-color: #f4f6f0;    /* 背景色（画像に近いほんのり緑がかった白） */
+    --text-main: #111111;   /* 文字色を漆黒に近づけて視認性UP */
+    --text-muted: #333333;  /* グレーを濃くして読みやすく */
+}
+
+html {
+    /* 1スクロールでピタッと止める設定 */
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    color: var(--text-main);
+    background-color: var(--bg-color);
+    line-height: 1.6;
+}
+
+div, p, h1, h2, h3, h4 {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* スナップの区切りポイントを指定 */
+header, .whatsnew, footer {
+    scroll-snap-align: start;
+}
+
+/* =========================================
+   Loading Screen
+========================================= */
+#loading-screen {
+    position: fixed;
+    inset: 0;
+    background-color: var(--theme-color);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+#loading-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+.loader-text {
+    font-size: 3.5rem;
+    color: #fff;
+    letter-spacing: 5px;
+    animation: pop 1s infinite alternate cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+@keyframes pop {
+    0% { transform: scale(0.9); }
+    100% { transform: scale(1.1); }
+}
+
+/* =========================================
+   Typography
+========================================= */
+.ja1yev {
+    font-family: 'Krungthep', sans-serif;
+    letter-spacing: 2px;
+}
+
+.tgu_arc {
+    font-family: "ab-kokoro-no3", sans-serif;
+}
+
+/* =========================================
+   Header (Hero Section)
+========================================= */
+header {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)), url("./IMG_3398.jpeg");
+    background-size: cover;
+    background-position: center;
+}
+
+.__header_textarea {
+    text-align: center;
+    color: aliceblue;
+    padding: 2em;
+}
+
+.__header_textarea h1 {
+    font-size: 4rem;
+    margin-bottom: 10px;
+}
+
+.__header_textarea h2 {
+    font-size: 1.2rem;
+    font-weight: normal;
+    letter-spacing: 0.05em;
+}
+
+.__header_scroll {
+    position: absolute;
+    bottom: 40px;
+    background-color: var(--theme-color);
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    padding: 12px 30px;
+    border: 3px solid #fff;
+    border-radius: 50px;
+    cursor: pointer;
+    animation: bounce 2s infinite;
+    transition: background-color 0.2s;
+}
+.__header_scroll:hover {
+    background-color: var(--theme-dark);
+}
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-15px); }
+    60% { transform: translateY(-7px); }
+}
+
+/* =========================================
+   Content Area & Sections
+========================================= */
+.__area_content_area {
+    background-image: 
+        linear-gradient(0deg, transparent calc(100% - 1px), rgba(0,0,0,0.03) calc(100% - 1px)),
+        linear-gradient(90deg, transparent calc(100% - 1px), rgba(0,0,0,0.03) calc(100% - 1px));
+    background-size: 20px 20px;
+}
+
+.whatsnew {
+    max-width: 800px;
+    margin: 0 auto;
+    /* 画面高さ以上を確保してスナップの挙動を安定させる */
+    min-height: 100vh; 
+    padding: 80px 20px 60px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 縦方向の中央寄せ */
+}
+
+/* =========================================
+   Heading (吹き出し ＆ ハムスター)
+   ★ここからサイズを約25%UPに調整★
+========================================= */
+.__area_content_header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 50px; /* サイズアップに伴い余白も広げました */
+}
+
+/* 影をつけるためのラッパー */
+.heading-bubble-wrapper {
+    display: inline-block;
+    filter: drop-shadow(8px 8px 0px #cfd4c5); /* 影も少し太く (6px -> 8px) */
+    
+    /* 初期状態（上に隠れる） */
+    opacity: 0;
+    transform: translateY(-40px) rotate(-3deg);
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+}
+
+.__heading {
+    font-family: 'New-Astro', sans-serif;
+    font-weight: 600;
+    font-size: 2rem; /* 1.6rem -> 2rem */
+    color: var(--text-main);
+    line-height: 1.4;
+    text-align: center;
+    background-color: #fff;
+    padding: 20px 50px; /* 15px 40px -> 20px 50px */
+    position: relative;
+}
+
+/* 吹き出しのしっぽ */
+.__heading::after {
+    content: '';
+    position: absolute;
+    bottom: -20px; /* -15px -> -20px */
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 20px solid transparent; /* 15px -> 20px */
+    border-right: 20px solid transparent; /* 15px -> 20px */
+    border-top: 20px solid #fff; /* 15px -> 20px */
+}
+
+.__heading small {
+    display: block;
+    font-size: 1.2rem; /* 0.95rem -> 1.2rem */
+    font-weight: normal;
+    color: var(--text-main);
+    margin-bottom: 5px;
+    letter-spacing: 0.1em;
+}
+
+/* ハムスター画像 */
+.heading-hamster {
+    width: 100px; /* 80px -> 100px */
+    margin-top: 30px; /* 25px -> 30px */
+    
+    /* 初期状態（下に隠れる） */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+}
+
+/* --- アニメーション発火 (JS連動) --- */
+.whatsnew.is-visible .heading-bubble-wrapper {
+    opacity: 1;
+    transform: translateY(0) rotate(-3deg);
+}
+.whatsnew.is-visible .heading-hamster {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.2s; /* 吹き出しより少し遅れて出現 */
+}
+
+/* =========================================
+   Content Elements (文章のデザインとボヨン効果)
+========================================= */
+._whatsnew_contentarea {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.__content_text_eyecatch {
+    font-size: 1.15rem;
+    font-weight: bold;
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 8px;
+    border: 4px dashed var(--theme-color);
+    color: var(--text-main);
+    text-align: center;
+}
+
+.detail-box {
+    padding: 10px 20px;
+}
+
+.detail {
+    color: var(--text-muted);
+    margin-bottom: 15px;
+    font-weight: 500;
+    font-size: 1.05rem;
+}
+
+/* --- 文章（<p>）のボヨン効果 --- */
+.whatsnew .__content_container p {
+    opacity: 0;
+    transform: scale(0.7) translateY(30px);
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+}
+
+.whatsnew.is-visible .__content_container p {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+/* 登場タイミングを少しずつズラす */
+.whatsnew.is-visible .__content_text_eyecatch {
+    transition-delay: 0.3s;
+}
+.whatsnew.is-visible .detail-box .detail:nth-child(1) {
+    transition-delay: 0.45s;
+}
+.whatsnew.is-visible .detail-box .detail:nth-child(2) {
+    transition-delay: 0.6s;
+}
+
+/* =========================================
+   Photo Gallery (画像枠)
+========================================= */
+.photo-gallery {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.photo-item {
+    width: 45%;
+    aspect-ratio: 4 / 3; /* 画像がない時でも四角い枠を保つ */
+    object-fit: cover;
+    background-color: #e4e9dd; /* リンク切れ時のダミー背景色 */
+    border: 6px solid #fff; /* ポラロイド風の白枠 */
+    border-radius: 6px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    position: relative;
+}
+
+/* 写真ごとの初期状態と傾き */
+.photo-item:nth-child(1) {
+    opacity: 0;
+    transform: scale(0.7) translateY(30px) rotate(-4deg);
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+}
+.photo-item:nth-child(2) {
+    opacity: 0;
+    transform: scale(0.7) translateY(30px) rotate(4deg);
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+}
+
+/* --- 写真のボヨンアニメーション --- */
+.whatsnew.is-visible .photo-gallery .photo-item:nth-child(1) {
+    opacity: 1;
+    transform: scale(1) translateY(0) rotate(-4deg);
+    transition-delay: 0.75s;
+}
+.whatsnew.is-visible .photo-gallery .photo-item:nth-child(2) {
+    opacity: 1;
+    transform: scale(1) translateY(0) rotate(4deg);
+    transition-delay: 0.9s;
+}
+
+/* =========================================
+   Accordion (スケジュール開閉)
+========================================= */
+.schedule-details {
+    background: #fff;
+    border: 4px solid var(--text-main);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.schedule-summary {
+    display: block;
+    cursor: pointer;
+    background-color: var(--theme-color);
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    padding: 15px;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    list-style: none;
+}
+.schedule-summary::-webkit-details-marker {
+    display: none;
+}
+.schedule-summary::after {
+    content: ' ▼';
+    font-size: 0.9em;
+}
+.schedule-details[open] .schedule-summary::after {
+    content: ' ▲';
+}
+
+/* =========================================
+   Timeline (アコーディオンの中身)
+========================================= */
+.schedule-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    position: relative;
+    padding: 40px 0 60px 0;
+    max-width: 900px;
+    margin: 0 auto;
+}
+/*
+.schedule-timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 216px; 
+    width: 8px; 
+    background-color: var(--theme-color);
+    z-index: 0;
+} 
+
+.schedule-timeline::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 205px; 
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 20px solid var(--theme-color);
+}
+*/
+
+.timeline-item {
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.timeline-date {
+    flex: 0 0 120px;
+    text-align: right;
+    padding-right: 30px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--text-main);
+}
+
+.timeline-node-wrapper {
+    flex: 0 0 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.timeline-node {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+    line-height: 1.4;
+    background-color: #fff;
+    position: relative;
+    z-index: 2; 
+    font-size: 2em;
+}
+
+.timeline-node.outline {
+    border: 7px solid var(--theme-color);
+    color: var(--text-main);
+}
+
+.timeline-node.filled {
+    background-color: var(--theme-color);
+    border: 7px solid var(--theme-color);
+    color: #fff;
+}
+
+.timeline-desc {
+    flex: 1;
+    margin-left: 40px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    border: 3px solid #e8e8e8;
+    position: relative;
+}
+
+.timeline-desc h4 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+    color: var(--theme-color);
+}
+
+.timeline-desc p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+/* =========================================
+   CTA Button (LPのゴール)
+========================================= */
+.cta-section {
+    margin-bottom: 60px;
+}
+
+.cta-area {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.cta-button {
+    display: inline-block;
+    background-color: #ff6b6b; 
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 20px 50px;
+    border-radius: 50px;
+    border: 4px solid var(--text-main); 
+    transition: transform 0.1s;
+}
+
+.cta-button:active {
+    transform: scale(0.95);
+}
+
+/* =========================================
+   Footer
+========================================= */
+footer {
+    padding: 3em 1em;
+    background-color: var(--text-main);
+    color: #fff;
+    text-align: center;
+}
+
+.__footer_logo p {
+    margin: 0;
+}
+
+.__footer_logo .ja1yev {
+    font-size: 1.5rem;
+}
+
+.__footer_logo .tgu_arc {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* =========================================
+   Responsive (Mobile)
+========================================= */
+@media (max-width: 768px) {
+    .__header_textarea h1 {
+        font-size: 3rem;
+    }
+    
+    .__area_content_area {
+        padding-top: 0;
+    }
+
+    .whatsnew {
+        padding: 60px 15px 40px 15px;
+    }
+
+    /* スマホ版も比率に合わせて大きくしています */
+    .__heading {
+        font-size: 1.6rem; /* 1.3rem -> 1.6rem */
+        padding: 20px; /* 15px -> 20px */
+    }
+    
+    .__heading small {
+        font-size: 1rem;
+    }
+    
+    .photo-gallery {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .photo-item {
+        width: 85%;
+    }
+
+    .schedule-timeline::before,
+    .schedule-timeline::after {
+        display: none;
+    }
+
+    .timeline-item {
+        flex-direction: column;
+        align-items: flex-start;
+        background: #fff;
+        border: 3px solid #e8e8e8;
+        border-left: 8px solid var(--theme-color);
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 25px;
+    }
+
+    .timeline-date {
+        text-align: left;
+        padding-right: 0;
+        flex: auto;
+        margin-bottom: 10px;
+        font-size: 1rem;
+    }
+
+    .timeline-node-wrapper {
+        display: none; 
+    }
+
+    .timeline-desc {
+        margin-left: 0;
+        padding: 0;
+        border: none;
+        background-color: transparent;
+    }
+
+    .cta-button {
+        display: block;
+        width: 100%;
+        padding: 20px 10px;
+        font-size: 1.2rem;
+    }
+}

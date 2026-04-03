@@ -1,0 +1,255 @@
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: sans-serif;
+}
+
+.ja1yev {
+    font-family: 'Krungthep', sans-serif;
+}
+
+.tgu_arc {
+    font-family: "ab-kokoro-no3", sans-serif;
+}
+
+.__heading {
+    font-family: 'New-Astro', sans-serif;
+    font-weight: 600;
+    font-style: normal;
+}
+
+div {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: grid;
+    place-items: center start;
+    height: 100vh;
+    /*background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 1)), url("./IMG_3398.jpeg");*/
+    background: url("./IMG_3398.jpeg");
+    background-size: cover;
+    background-origin: border-box;
+}
+
+.__header_textarea {
+    font-family: 'Krungthep', "ab-kokoro-no3" ,sans-serif;
+    color: aliceblue;
+    padding: 5em;
+}
+
+p.__header_scroll {
+    text-align: center;
+}
+
+.__header_textarea h1 {
+    font-size: 3em;
+}
+
+.__header_textarea h2 {
+    font-size: 1em;
+}
+
+.__area_content_area {
+    min-height: 100vh;
+}
+
+.whatsnew {
+    min-height: 20vh;
+}
+
+ /*
+.whatsnew {
+    background-color: black;
+    color: white;
+}
+*/
+
+.__area_content_header {
+    padding-top: 1em;
+}
+
+footer {
+    padding: 1em;
+    background-color: #474a4d;
+    color: white;
+}
+
+/*テキスト装飾*/
+.__content_text_eyecatch {
+    text-decoration: underline 3px;
+    text-decoration-color: aqua;
+}
+
+/*地紋*/
+.__area_content_area {
+    background-image:   linear-gradient(0deg, transparent calc(100% - 1px), #f0f0f0 calc(100% - 1px)),
+                        linear-gradient(90deg, transparent calc(100% - 1px), #f0f0f0 calc(100% - 1px));
+    background-size: 16px 16px;
+    background-repeat: repeat;
+    background-position: center center;
+    padding: 20px;
+    padding: 0 20%;
+}
+
+/* eyecatch box*/
+.__content_text_eyecatch {
+    font-size: 1.1em;
+    border-radius: 5px;
+    padding: 20px 25px;
+    border-radius: 8px;
+    border: 4px dashed gray;
+}
+
+/* タイムライン全体のコンテナ */
+.schedule-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    position: relative;
+    padding: 20px 0 40px 0;
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: sans-serif;
+    --theme-color: #9cbd40; /* 画像に近い黄緑色 */
+}
+
+/* 中央の縦線 */
+.schedule-timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    /* 日付幅(120px) + 余白(30px) + 丸の半径(70px) - 線の半分の太さ(4px) = 216px */
+    left: 216px; 
+    width: 8px;
+    background-color: var(--theme-color);
+    z-index: 0;
+}
+
+/* 一番下の矢印 */
+.schedule-timeline::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    /* 中心軸(220px)から矢印の半分の幅(15px)を引く = 205px */
+    left: 205px;
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 20px solid var(--theme-color);
+}
+
+/* 各項目のラッパー */
+.timeline-item {
+    display: flex;
+    align-items: center; /* コンテンツ量が多い場合は flex-start に変更してください */
+    position: relative;
+    z-index: 1;
+}
+
+/* 左側：日付 */
+.timeline-date {
+    flex: 0 0 120px;
+    text-align: right;
+    padding-right: 30px;
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: #111;
+}
+
+/* 中央：丸アイコンのラッパー */
+.timeline-node-wrapper {
+    flex: 0 0 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 丸アイコン共通スタイル */
+.timeline-node {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+    line-height: 1.4;
+    box-sizing: border-box;
+    background-color: #fff;
+    /* 丸の背景を線の前面に出す */
+    position: relative;
+    z-index: 2; 
+}
+
+/* 白背景＋緑フチ（奇数回） */
+.timeline-node.outline {
+    border: 7px solid var(--theme-color);
+    color: #000;
+}
+
+/* 緑背景＋白文字（偶数回） */
+.timeline-node.filled {
+    background-color: var(--theme-color);
+    border: 7px solid var(--theme-color); /* サイズを揃えるためのボーダー */
+    color: #fff;
+}
+
+/* 右側：説明書き */
+.timeline-desc {
+    flex: 1;
+    margin-left: 40px;
+    padding: 20px;
+    background-color: #f7f9f2; /* ほんのり緑がかった薄いグレー */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.timeline-desc h4 {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    color: var(--theme-color);
+}
+
+.timeline-desc p {
+    margin: 0;
+    line-height: 1.6;
+    color: #444;
+}
+
+/* スマホ用レスポンシブ（画面幅が狭い場合） */
+@media (max-width: 768px) {
+    .schedule-timeline::before,
+    .schedule-timeline::after {
+        display: none; /* スマホでは縦線を消す */
+    }
+    .timeline-item {
+        flex-direction: column;
+        align-items: flex-start;
+        background: #fff;
+        border-left: 6px solid var(--theme-color);
+        padding-left: 15px;
+        margin-bottom: 20px;
+    }
+    .timeline-date {
+        text-align: left;
+        padding-right: 0;
+        flex: auto;
+        margin-bottom: 10px;
+    }
+    .timeline-node-wrapper {
+        display: none; /* スマホでは巨大な丸アイコンを非表示（好みに応じて変更） */
+    }
+    .timeline-desc {
+        margin-left: 0;
+        padding: 10px 0;
+        background-color: transparent;
+        box-shadow: none;
+    }
+}
