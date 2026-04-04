@@ -20,7 +20,9 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    font-family: fot-rodin-pron, 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    font-style: normal;
+    font-weight: 600;
     color: var(--text-main);
     background-color: var(--bg-color);
     line-height: 1.6;
@@ -69,7 +71,10 @@ header, .whatsnew, footer {
    Typography
 ========================================= */
 .ja1yev {
-    font-family: 'Krungthep', sans-serif;
+    /*font-family: 'Krungthep', sans-serif;*/
+    font-family: "barber-complete", sans-serif;
+    font-weight: 700;
+    font-style: normal;
     letter-spacing: 2px;
 }
 
@@ -298,7 +303,7 @@ header {
 
 .photo-item {
     width: 45%;
-    aspect-ratio: 4 / 3; /* 画像がない時でも四角い枠を保つ */
+    /*aspect-ratio: 4 / 3; /* 画像がない時でも四角い枠を保つ */
     object-fit: cover;
     background-color: #e4e9dd; /* リンク切れ時のダミー背景色 */
     border: 6px solid #fff; /* ポラロイド風の白枠 */
